@@ -118,11 +118,39 @@ def count_long_movies(movies, threshold=120):
             
     return count
 
+# Fourth part
 
+def normalize_title(title):
+    # строку разбиваем на список слов
+    words = title.split()
+    
+    # создаём новый список
+    normalized_words = []
+    for word in words:
+        # если слово пустое (например, лишние пробелы), пропускаем
+        if not word:
+            continue
+        new_word = word[0].upper() + word[1:]
+        normalized_words.append(new_word)
+    
+    return " ".join(normalized_words)
 
+def make_slug(title):
+    words = normalize_title(title).lower().split()
+    return "-".join(words)
 
-
-
+def format_report_line(movie):
+    # нормализуем название
+    title = normalize_title(movie['title'])
+    year = movie['year']
+    rating = movie['rating']
+    duration_formatted = duration_in_hours(movie['duration_min'])
+    # !!! сортируем жанры по алфавиту перед объединением в строку
+    sorted_genres = sorted(movie['genres'])
+    genres_str = ", ".join(sorted_genres)
+    # Шаблон: '"Название" (Год) — Рейтинг/10, Длительность, жанры: список'
+    report = f'"{title}" ({year}) — {rating}/10, {duration_formatted}, жанры: {genres_str}'
+    return report
 
 def main():
     print("Hello from dz-catalog-analysis-salakhetdinov-M26-555!")
@@ -138,4 +166,7 @@ print(catalog_age_stats(movies, 2026))
 print(duration_in_hours(136))
 print(decade_label(2001))
 print(count_long_movies(movies,120))
-
+#4
+print(normalize_title("silent hours"))
+print(make_slug("Silent Hours"))
+print(format_report_line(movies[7]))
