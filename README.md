@@ -1,2 +1,2 @@
-# dz-catalog-analysis_Salakhetdinov_-26-555
+# dz-catalog-analysis_Salakhetdinov_M26-555
 Домашнее задание №1: Аналитика каталога стримингового сервиса (теория)
