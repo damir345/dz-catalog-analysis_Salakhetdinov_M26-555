@@ -53,6 +53,34 @@ def duration_in_hours(minutes):
     remaining_minutes = minutes % 60
     return f"{hours}ч {remaining_minutes}м"
 
+# Second part
+
+def rating_tier(rating):
+    if rating >= 9:
+        return "шедевр"
+
+    # тернарный оператор
+    elif rating >= 7:
+        result = "почти шедевр" if rating > 8.5 else "хорошо"
+        return result
+    
+    elif rating >= 5:
+        return "средне"
+    
+    else:
+        return "слабо"
+
+def decade_label(year):
+    match year:
+        case _ if year > 2020:
+            return "новые"
+        
+        # средний диапазон
+        case _ if 2015 <= year <= 2020:
+            return "недавние"
+        
+        case _:
+            return "старые"
 
 
 
@@ -68,4 +96,5 @@ output = average_rating(movies)
 print(f'Средняя оценка по каталогу: {output}')
 print(catalog_age_stats(movies, 2026))
 print(duration_in_hours(136))
+print(decade_label(2001))
 
