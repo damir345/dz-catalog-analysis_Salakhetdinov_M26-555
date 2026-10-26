@@ -152,6 +152,28 @@ def format_report_line(movie):
     report = f'"{title}" ({year}) — {rating}/10, {duration_formatted}, жанры: {genres_str}'
     return report
 
+#Fifth part
+
+def titles_sorted_by_rating(movies):
+    # сортируем список фильмов по рейтингу (по убыванию), исходный movies не меняется
+    sorted_movies = sorted(movies, key=lambda m: m['rating'], reverse=True)
+    
+    # список только из названий
+    titles = [movie['title'] for movie in sorted_movies]
+    
+    return titles
+
+def top_n_by_rating(movies, n=3):
+    sorted_movies = sorted(movies, key=lambda m: m['rating'], reverse=True)
+    
+    # только первые n элементов
+    top_n_movies = sorted_movies[:n]
+    
+    # превращаем каждый фильм в кортеж (title, rating)
+    result = [(movie['title'], movie['rating']) for movie in top_n_movies]
+    
+    return result
+
 def main():
     print("Hello from dz-catalog-analysis-salakhetdinov-M26-555!")
 
@@ -170,3 +192,6 @@ print(count_long_movies(movies,120))
 print(normalize_title("silent hours"))
 print(make_slug("Silent Hours"))
 print(format_report_line(movies[7]))
+#5
+print(titles_sorted_by_rating(movies))
+print(top_n_by_rating(movies,3))
