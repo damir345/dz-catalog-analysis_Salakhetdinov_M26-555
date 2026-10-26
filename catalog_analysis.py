@@ -220,6 +220,40 @@ def get_high_rated_movies(movies):
     
     return high_rated
 
+#Seventh part
+
+def all_genres(movies):
+    all_unique = set()
+    
+    for movie in movies:
+        # оператор | делает объединение двух множеств
+        all_unique = all_unique | movie['genres']
+        
+    return all_unique
+
+def common_actors(movie1, movie2):
+    # превращаем списки актёров в множества
+    actors_1 = set(movie1['actors'])
+    actors_2 = set(movie2['actors'])
+    
+    common = actors_1 & actors_2
+    
+    return common
+
+def genres_only_in_one(movies_a, movies_b):
+    genres_a = set()
+    for movie in movies_a:
+        genres_a.update(movie['genres'])
+    
+    genres_b = set()
+    for movie in movies_b:
+        genres_b.update(movie['genres'])
+    
+    # которые есть в A, но НЕТ в B
+    unique_to_a = genres_a - genres_b
+    
+    return unique_to_a
+
 def main():
     print("Hello from dz-catalog-analysis-salakhetdinov-M26-555!")
 
@@ -244,3 +278,7 @@ print(top_n_by_rating(movies,3))
 #6
 print(count_by_genre(movies))
 print(get_high_rated_movies(movies))
+#7
+print(all_genres(movies))
+print(common_actors(movies[0], movies[3]))
+print(genres_only_in_one(movies[5:6], movies[:5]))
