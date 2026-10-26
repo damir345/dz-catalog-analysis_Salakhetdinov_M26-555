@@ -1,8 +1,11 @@
 import math
 
+DEBUG = False
+
 movies = [
     {"title": "The Dune Chronicles", "year": 2021, "genres": {"sci-fi", "drama"},
-     "rating": 8.6, "duration_min": 155, "actors": ["T. Chalamet", "R. Ferguson", "O. Isaac"]},
+     "rating": 8.6, "duration_min": 155, "actors": 
+        ["T. Chalamet", "R. Ferguson", "O. Isaac"]},
     {"title": "Kitchen Stories", "year": 2019, "genres": {"comedy", "drama"},
      "rating": 7.1, "duration_min": 98, "actors": ["A. Novak", "M. Ferguson"]},
     {"title": "silent hours", "year": 2016, "genres": {"thriller", "drama"},
@@ -27,7 +30,8 @@ movies = [
 
 def average_rating(movies):
     '''
-    Функция average_rating(movies) возвращает среднюю оценку по каталогу, округленную до одного знака (round).
+    Функция average_rating(movies) возвращает среднюю оценку по каталогу,
+    округленную до одного знака (round).
     '''
     ratings = []
     for movie in movies:
@@ -88,7 +92,8 @@ for movie in movies:
     # Если жанр комедия, пропускаем этот фильм
     if movie['genres'] == 'comedy':
         continue
-    print(movie['title'])
+    if DEBUG:
+        print(movie['title'])
 
 index = 0
 found = False  # Флаг, чтобы запомнить, нашли ли мы фильм
@@ -99,7 +104,8 @@ while index < len(movies):
     current_movie = movies[index]
     
     if current_movie['rating'] > 9.0:
-        print(f"Нашёл шедевр: {current_movie['title']}")
+        if DEBUG:
+            print(f"Нашёл шедевр: {current_movie['title']}")
         break  # прерываем цикл
     
     index += 1  # к следующему фильму
@@ -149,7 +155,8 @@ def format_report_line(movie):
     sorted_genres = sorted(movie['genres'])
     genres_str = ", ".join(sorted_genres)
     # Шаблон: '"Название" (Год) — Рейтинг/10, Длительность, жанры: список'
-    report = f'"{title}" ({year}) — {rating}/10, {duration_formatted}, жанры: {genres_str}'
+    report = f'"{title}" ({year}) — {rating}/10, {duration_formatted}, '
+    report = report + f'жанры: {genres_str}'
     return report
 
 #Fifth part
@@ -170,6 +177,7 @@ def top_n_by_rating(movies, n=3):
     top_n_movies = sorted_movies[:n]
     
     # превращаем каждый фильм в кортеж (title, rating)
+    
     result = [(movie['title'], movie['rating']) for movie in top_n_movies]
     
     return result
@@ -262,7 +270,8 @@ def iter_high_rated(movies, min_rating=8.0):
             yield movie
 
 for movie in iter_high_rated(movies, min_rating=8.0):
-    print(format_report_line(movie))
+    if DEBUG:
+        print(format_report_line(movie))
 
 total_duration = sum(
     m["duration_min"] 
@@ -270,33 +279,60 @@ total_duration = sum(
     if m["rating"] > 7
 )
 
+#Ninth part (final)
+
+def build_report(movies):
+    print("ОТЧЕТ ПО КАТАЛОГУ")
+    
+    # Общая статистика
+    avg_rating = average_rating(movies)
+    age_stats = catalog_age_stats(movies)
+    avg_age_years = age_stats[2]
+    
+    if avg_rating is not None:
+        print(f"Средний рейтинг: {avg_rating}")
+    else:
+        print("Средний рейтинг: нет данных")
+        
+    print(f"Средний возраст фильмов: {avg_age_years} лет")
+    print()
+    
+    # Топ-3 фильма
+    print("Топ-3 фильма:")
+    top_3 = top_n_by_rating(movies, n=3)
+    
+    movies_by_title = {m['title']: m for m in movies}
+    
+    for title, rating in top_3:
+        full_movie = movies_by_title.get(title)
+        if full_movie:
+            print(f"  {format_report_line(full_movie)}")
+            
+    print()
+    
+    # Фильмов по жанрам (сортировка по убыванию количества)
+    print("Фильмов по жанрам:")
+    genre_counts = count_by_genre(movies)
+    
+
+    sorted_genres = sorted(genre_counts.items(), key=lambda x: x[1], reverse=True)
+    
+    for genre, count in sorted_genres:
+        print(f"  {genre} — {count}")
+        
+    print()
+    
+    # Все жанры каталога (одной строкой, по алфавиту)
+    all_genres_set = all_genres(movies)
+    sorted_genres_list = sorted(all_genres_set)
+    all_genres_str = ", ".join(sorted_genres_list)
+    
+    print(f"Все жанры каталога: {all_genres_str}")
+
 def main():
     print("Hello from dz-catalog-analysis-salakhetdinov-M26-555!")
 
 
 if __name__ == "__main__":
-    main()
-
-###outputs
-output = average_rating(movies)
-print(f'Средняя оценка по каталогу: {output}')
-print(catalog_age_stats(movies, 2026))
-print(duration_in_hours(136))
-print(decade_label(2001))
-print(count_long_movies(movies,120))
-#4
-print(normalize_title("silent hours"))
-print(make_slug("Silent Hours"))
-print(format_report_line(movies[7]))
-#5
-print(titles_sorted_by_rating(movies))
-print(top_n_by_rating(movies,3))
-#6
-print(count_by_genre(movies))
-print(get_high_rated_movies(movies))
-#7
-print(all_genres(movies))
-print(common_actors(movies[0], movies[3]))
-print(genres_only_in_one(movies[5:6], movies[:5]))
-#8
-print(total_duration)
+    #main()
+    build_report(movies)
