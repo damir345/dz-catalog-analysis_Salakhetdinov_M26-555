@@ -174,6 +174,52 @@ def top_n_by_rating(movies, n=3):
     
     return result
 
+#Sixth part
+
+def count_by_genre(movies):
+    genre_counts = {}  # пустой словарь для результатов
+    
+    for movie in movies:
+        for genre in movie['genres']:
+            # получаем текущее количество (или 0, если жанра ещё нет) и прибавляем 1
+            genre_counts[genre] = genre_counts.get(genre, 0) + 1
+            
+    return genre_counts
+
+def actor_filmography(movies):
+    filmography = {}
+    
+    for movie in movies:
+        for actor in movie['actors']:
+            # проверяем, есть ли уже список для этого актёра
+            if actor not in filmography:
+                filmography[actor] = []
+            
+            filmography[actor].append(movie['title'])
+            
+    return filmography
+
+'''
+Используем генератор словаря (dict comprehension), третий пункт: строим 
+словарь {title: rating} только для фильмов с рейтингом выше среднего 
+(используйте average_rating из этапа 1).
+'''
+
+def get_high_rated_movies(movies):
+    avg_val = average_rating(movies)
+    
+    if avg_val is None:
+        return {}
+    
+    # генератор словаря (dict comprehension)
+    high_rated = {
+        movie['title']: movie['rating'] 
+        for movie in movies 
+        if movie['rating'] > avg_val
+    }
+    
+    return high_rated
+
 def main():
     print("Hello from dz-catalog-analysis-salakhetdinov-M26-555!")
 
@@ -195,3 +241,6 @@ print(format_report_line(movies[7]))
 #5
 print(titles_sorted_by_rating(movies))
 print(top_n_by_rating(movies,3))
+#6
+print(count_by_genre(movies))
+print(get_high_rated_movies(movies))
