@@ -82,6 +82,46 @@ def decade_label(year):
         case _:
             return "старые"
 
+# Third part
+
+for movie in movies:
+    # Если жанр комедия, пропускаем этот фильм
+    if movie['genres'] == 'comedy':
+        continue
+    print(movie['title'])
+
+index = 0
+found = False  # Флаг, чтобы запомнить, нашли ли мы фильм
+
+index = 0
+
+while index < len(movies):
+    current_movie = movies[index]
+    
+    if current_movie['rating'] > 9.0:
+        print(f"Нашёл шедевр: {current_movie['title']}")
+        break  # прерываем цикл
+    
+    index += 1  # к следующему фильму
+
+else:
+    # только если цикл дошёл до конца сам, без break
+    print("Шедевров не найдено") 
+
+def count_long_movies(movies, threshold=120):
+    count = 0  # Инициализируем счётчик
+    
+    for movie in movies:
+        # Проверяем, длиннее ли фильм порога
+        if movie['duration_min'] > threshold:
+            count += 1  # Увеличиваем счётчик
+            
+    return count
+
+
+
+
+
 
 
 def main():
@@ -97,4 +137,5 @@ print(f'Средняя оценка по каталогу: {output}')
 print(catalog_age_stats(movies, 2026))
 print(duration_in_hours(136))
 print(decade_label(2001))
+print(count_long_movies(movies,120))
 
