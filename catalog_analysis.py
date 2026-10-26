@@ -1,3 +1,5 @@
+import math
+
 movies = [
     {"title": "The Dune Chronicles", "year": 2021, "genres": {"sci-fi", "drama"},
      "rating": 8.6, "duration_min": 155, "actors": ["T. Chalamet", "R. Ferguson", "O. Isaac"]},
@@ -21,9 +23,49 @@ movies = [
      "rating": 7.3, "duration_min": 129, "actors": ["P. Diaz", "T. Chalamet"]},
 ]
 
+# First part
+
+def average_rating(movies):
+    '''
+    Функция average_rating(movies) возвращает среднюю оценку по каталогу, округленную до одного знака (round).
+    '''
+    ratings = []
+    for movie in movies:
+        if 'rating' in movie and movie['rating'] is not None:
+            ratings.append(movie['rating'])
+    if len(ratings) == 0:
+        return None
+    avg = sum(ratings) / len(ratings)
+    return round(avg, 1)
+
+def catalog_age_stats(movies, current_year=2026):
+    if not movies: 
+        return (0, 0, 0)
+    ages = [current_year - movie['year'] for movie in movies]
+    oldest_age = max(ages)
+    newest_age = min(ages)
+    average_age = sum(ages) / len(ages)
+    average_age_rounded = math.ceil(average_age)
+    return (oldest_age, newest_age, average_age_rounded)
+
+def duration_in_hours(minutes):
+    hours = minutes // 60
+    remaining_minutes = minutes % 60
+    return f"{hours}ч {remaining_minutes}м"
+
+
+
+
 def main():
-    print("Hello from dz-catalog-analysis-salakhetdinov-m26-555!")
+    print("Hello from dz-catalog-analysis-salakhetdinov-M26-555!")
 
 
 if __name__ == "__main__":
     main()
+
+###outputs
+output = average_rating(movies)
+print(f'Средняя оценка по каталогу: {output}')
+print(catalog_age_stats(movies, 2026))
+print(duration_in_hours(136))
+
